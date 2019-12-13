@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+
+<!-- Sherpa -->
+
+<robot name ="gun" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<!--xacro:arg name="prefix" default="rbsherpa_hl_"/-->
+
+<!-- Lift Link -->
+<joint name="${prefix}torso_elevator_joint" type="prismatic">
+    <parent link="${prefix}base_link"/>
+    <child link="${prefix}torso_elevator_link"/>
+    <origin xyz="-0.37920 0.00470 ${chassis_z+chassis_field_height}"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="1000" lower="0.0" upper="2.5" velocity="0.5"/>
+</joint>
+
+<link name="${prefix}torso_elevator_link">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 ${(1.888-(chassis_z+chassis_field_height))/2}"/>
+      <geometry>
+        <box size="${lsp_x} ${lsp_y} ${(1.888-(chassis_z+chassis_field_height))}"/>
+      </geometry>
+     </visual>
+     
+    <inertial> 
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 ${(1.888-(chassis_z+chassis_field_height))/2}" />
+      <mass value="1.0" />
+      <box_inertia  m="1.0" h="${lsp_x}" w ="${lsp_y}" d="${(1.888-(chassis_z+chassis_field_height))}"/>
+    </inertial>
+</link>
+<gazebo reference="${prefix}torso_elevator_link"><material>Gazebo/Black</material></gazebo>
+
+<joint name="fake_torso_elevator_joint" type="fixed">
+    <parent link="${prefix}base_link"/>
+    <child link="fake_torso_elevator_link"/>
+    <origin xyz="-0.37920 0.00470 ${chassis_z+chassis_field_height}"/>
+</joint>
+
+<link name="fake_torso_elevator_link">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 ${(1.888-(chassis_z+chassis_field_height))/2}"/>
+      <geometry>
+        <box size="${lsp_x} ${lsp_y} ${(1.888-(chassis_z+chassis_field_height))}"/>
+      </geometry>
+     </visual>
+     
+    <inertial> 
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 ${(1.888-(chassis_z+chassis_field_height))/2}" />
+      <mass value="1.0" />
+      <box_inertia  m="1.0" h="${lsp_x}" w ="${lsp_y}" d="${(1.888-(chassis_z+chassis_field_height))}"/>
+    </inertial>
+</link>
+<gazebo reference="fake_torso_elevator_link"><material>Gazebo/Black</material></gazebo>
+
+<!-- Pan -->
+<joint name="${prefix}torso_pantilt_pan_joint" type="revolute">
+    <parent link="${prefix}torso_elevator_link"/>
+    <child link="${prefix}torso_pantilt_pan_link"/>
+    <origin xyz="0.0 0.0 ${1.888-(chassis_z+chassis_field_height)}"/>
+     <axis xyz="0.0 0.0 1"/>-->
+	<limit effort="100" lower="-3.1415" upper="3.1415" velocity="0.4"/>
+</joint>
+
+<link name="${prefix}torso_pantilt_pan_link">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 ${pan_z/2}"/>
+      <geometry>
+        <box size="${pan_x} ${pan_y} ${pan_z}"/>
+      </geometry>
+     </visual>
+     
+    <inertial> 
+      <origin rpy="0.0 0.0 0.0" xyz="0 0 ${pan_z/2}"/>
+      <mass value="1" />
+      <box_inertia  m="1" h="${pan_x}" w ="${pan_y}" d="${pan_z}"/>
+    </inertial>
+</link>
+<gazebo reference="${prefix}torso_pantilt_pan_link"><material>Gazebo/Grey</material></gazebo>
+
+
+</robot>

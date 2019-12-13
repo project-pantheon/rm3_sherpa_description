@@ -1,0 +1,51 @@
+<launch>
+
+  <!-- these are the arguments you can pass this launch file -->
+  <arg name="namespace" default="/"/>
+  <arg name="paused" default="false"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+   <arg name="prefix" default="rbsherpa_hl_"/>
+
+  <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    <arg name="headless" value="$(arg headless)"/>
+  </include>
+
+  <!-- Combine joint values-->
+  <group ns="sherpa"> 
+
+        <!-- Gui Parameter -->
+
+    <param name="use_gui" value="false"/>
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+
+<rosparam file="$(find rm3_sherpa_description)/description/config/sherpa_controller.yaml" command="load" />
+
+        <!-- load the controllers -->
+        <node name="controller_spawner" pkg="controller_manager"
+        type="spawner" respawn="false"
+        output="screen" args="$(find rm3_sherpa_description)/description/config/sherpa_controller.yaml"/>
+              
+        <!-- Spawn Robot model -->
+	    <param name="tf_prefix" value="sherpa"/>
+        <arg name="robot_name" default="sherpa"/>
+        <param name="robot_description" command="$(find xacro)/xacro.py '$(find rm3_sherpa_description)/description/robots/rm3_sherpa_omni.urdf.xacro' prefix:=$(arg prefix) sim:=false --inorder"/>
+		
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+
+        </node>
+        
+        <node name="sherpa_ex_urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf -model $(arg robot_name) -param robot_description"/>
+
+  </group>
+    
+
+  
+</launch>

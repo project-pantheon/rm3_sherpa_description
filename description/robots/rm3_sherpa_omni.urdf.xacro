@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+
+<!-- Sherpa -->
+
+<robot name ="sherpa" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find rm3_sherpa_description)/description/urdf/macros.xacro"/>
+<xacro:property name="prefix" value="rbsherpa_hl_"/>
+<!--xacro:arg name="prefix" default="rbsherpa_hl_"/-->
+
+<!-- Base Link -->
+	<link name="baselink">
+		<visual>
+			<origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.001"/>
+			<geometry>
+				<box size="0.001 0.001 0.001"/>
+		      </geometry>
+		</visual>
+	    
+		<collision>
+			<origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 ${chassis_field_height}"/>
+			<geometry>
+				<box size="0.001 0.001 0.001"/>
+			</geometry>
+		</collision>
+	</link>
+  
+	<joint name="${prefix}base_footprint_joint" type="fixed">
+		<parent link="baselink"/>
+		<child link="${prefix}base_link"/>
+<!--        <origin xyz="0.0 0.0 0.0"/>-->
+		<origin xyz="0.622 0.0 0.0"/>
+	</joint>
+	
+<!-- Chassis -->
+	<link name="${prefix}base_link">
+		<visual>
+			<origin rpy="0.0 0.0 ${PI}" xyz="0.0 0.0 ${chassis_z/2-0.0150}"/>
+			<geometry>
+<mesh filename="package://rm3_sherpa_description/description/meshes/rbsherpa_hl_base_tank.dae" />
+			</geometry>
+		</visual>
+     
+		<collision>
+			<origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 ${chassis_field_height+chassis_z/2}"/>
+			<geometry>
+				<box size="${chassis_x} ${chassis_y} ${chassis_z}"/>
+			</geometry>
+		</collision>
+     
+		<inertial> 
+			<origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 ${chassis_field_height+chassis_z/2}"/>
+			<mass value="${mass}"/>
+			<box_inertia  m="${mass}" h="${chassis_x}" w ="${chassis_y}" d="${chassis_z}"/>
+		</inertial>
+	</link>
+	
+	<gazebo reference="${prefix}base_link"><material>Gazebo/Red</material></gazebo>
+<!-- ros_control plugin -->
+	<gazebo>
+		<static>false</static>
+		<plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+			<robotNamespace>/sherpa</robotNamespace>
+			<robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+			<legacyModeNS>true</legacyModeNS>
+		</plugin>
+	</gazebo>
+
+
+<xacro:include filename="$(find rm3_sherpa_description)/description/urdf/arm.xacro"/>
+<xacro:include filename="$(find rm3_sherpa_description)/description/urdf/arm_transmission.xacro"/>
+
+<xacro:include filename="$(find rm3_sherpa_description)/description/urdf/wheel_steer.transmission.xacro"/>
+<xacro:include filename="$(find rm3_sherpa_description)/description/urdf/wheel_traction.transmission.xacro"/>
+<xacro:include filename="$(find rm3_sherpa_description)/description/urdf/sherpa_wheel.xacro"/>
+
+<xacro:include filename="$(find rm3_sherpa_description)/description/urdf/sensors.xacro"/>
+
+
+</robot>
