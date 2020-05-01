@@ -50,7 +50,7 @@
     <visual>   
       <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -${steer_z/2-0.0120}"/>
       <geometry>
-        <mesh filename="package://rbsherpa_hl_description/meshes/wheels/rbsherpa_hl_steer_wheel.dae" />
+        <mesh filename="package://rm3_sherpa_description/meshes/rbsherpa_hl_steer_wheel.dae" />
       </geometry>
     </visual>
 	     
@@ -94,7 +94,7 @@
     <visual>
       <origin rpy="0.0 ${PI/2} 0.0" xyz="0.0 ${wheel_width/2} 0.0"/>
       <geometry>
-        <mesh filename="package://rbsherpa_hl_description/meshes/wheels/rbsherpa_hl_traction_wheel.dae" />
+        <mesh filename="package://rm3_sherpa_description/meshes/rbsherpa_hl_traction_wheel.dae" />
       </geometry>
 <!--      <origin rpy="0.0 ${PI/2} ${PI/2}" xyz="0.0 ${wheel_width/2} 0.0"/>-->
 <!--      <geometry>-->
@@ -182,7 +182,7 @@
     <visual>   
       <origin rpy="0.0 0.0 ${PI}" xyz="0.0 0.0 -${steer_z/2-0.0120}"/>
       <geometry>
-        <mesh filename="package://rbsherpa_hl_description/meshes/wheels/rbsherpa_hl_steer_wheel.dae" />
+        <mesh filename="package://rm3_sherpa_description/meshes/rbsherpa_hl_steer_wheel.dae" />
       </geometry>
     </visual>
    
@@ -218,7 +218,7 @@
     <visual>
       <origin rpy="0.0 ${PI/2} 0.0" xyz="0.0 -${wheel_width/2} 0.0"/>
       <geometry>
-        <mesh filename="package://rbsherpa_hl_description/meshes/wheels/rbsherpa_hl_traction_wheel.dae" />
+        <mesh filename="package://rm3_sherpa_description/meshes/rbsherpa_hl_traction_wheel.dae" />
       </geometry>
     </visual>
             
@@ -276,7 +276,7 @@
     <visual>   
       <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -${steer_z/2-0.0120}"/>
       <geometry>
-        <mesh filename="package://rbsherpa_hl_description/meshes/wheels/rbsherpa_hl_steer_wheel.dae" />
+        <mesh filename="package://rm3_sherpa_description/meshes/rbsherpa_hl_steer_wheel.dae" />
       </geometry>
     </visual>
 
@@ -313,7 +313,7 @@
     <visual>
       <origin rpy="0.0 ${PI/2} 0.0" xyz="0.0 ${wheel_width/2} 0.0"/>
       <geometry>
-        <mesh filename="package://rbsherpa_hl_description/meshes/wheels/rbsherpa_hl_traction_wheel.dae" />
+        <mesh filename="package://rm3_sherpa_description/meshes/rbsherpa_hl_traction_wheel.dae" />
       </geometry>
     </visual>
             
@@ -375,7 +375,7 @@
 
       <origin rpy="0.0 0.0 ${PI}" xyz="0.0 0.0 -${steer_z/2-0.0120}"/>
       <geometry>
-        <mesh filename="package://rbsherpa_hl_description/meshes/wheels/rbsherpa_hl_steer_wheel.dae" />
+        <mesh filename="package://rm3_sherpa_description/meshes/rbsherpa_hl_steer_wheel.dae" />
       </geometry>
     </visual>
    
@@ -411,7 +411,7 @@
     <visual>
       <origin rpy="0.0 ${PI/2} 0.0" xyz="0.0 -${wheel_width/2} 0.0"/>
       <geometry>
-        <mesh filename="package://rbsherpa_hl_description/meshes/wheels/rbsherpa_hl_traction_wheel.dae" />
+        <mesh filename="package://rm3_sherpa_description/meshes/rbsherpa_hl_traction_wheel.dae" />
       </geometry>
     </visual>
             
