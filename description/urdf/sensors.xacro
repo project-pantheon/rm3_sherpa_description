@@ -445,9 +445,29 @@
 	</joint>
 
 
+	
+	
+	<link name="micasense">
+		
+		<visual>
+			<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+			<geometry>
+				<box size="0.020 0.020 0.020"/>
+			</geometry>
+		</visual>
+		
+		<inertial>
+			<mass value="0.5" />
+			<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+			<box_inertia  m="0.5" h="0.020" w ="0.020" d="0.020"/>
+		</inertial>
+			
+	</link>
+	
 
-    <!-- camera -->
-    <gazebo reference="camera">
+
+    <!-- camera/micasense -->
+    <gazebo reference="micasense">
         <sensor type="camera" name="camera">
           <update_rate>30.0</update_rate>
           <camera name="head">
@@ -476,7 +496,7 @@
             <cameraName>camera</cameraName>
             <imageTopicName>image_raw</imageTopicName>
             <cameraInfoTopicName>camera_info</cameraInfoTopicName>
-            <frameName>camera</frameName>
+            <frameName>micasense</frameName>
             <hackBaseline>0.07</hackBaseline>
             <distortionK1>0.0</distortionK1>
             <distortionK2>0.0</distortionK2>
@@ -485,30 +505,8 @@
             <distortionT2>0.0</distortionT2>
           </plugin>
         </sensor>
-      </gazebo>
+    </gazebo>
 
-
-
-
-	
-	
-	<link name="micasense">
-		
-		<visual>
-			<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-			<geometry>
-				<box size="0.020 0.020 0.020"/>
-			</geometry>
-		</visual>
-		
-		<inertial>
-			<mass value="0.5" />
-			<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-			<box_inertia  m="0.5" h="0.020" w ="0.020" d="0.020"/>
-		</inertial>
-			
-	</link>
-	
 	
     <!-- IMU -->
 	<joint name="imu_joint" type="fixed">
