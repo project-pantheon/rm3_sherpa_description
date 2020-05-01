@@ -55,7 +55,7 @@
     </visual>
 	     
     <inertial> 
-      <origin rpy="${PI/2} 0.0 0.0" xyz="0.0 0.0 -${steer_z/2}"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -${steer_z/2+0.2}"/>
 	    <mass value="0.1" />
         <!--OLD-->
         <!--<cylinder_inertia m="1.0" r="0.01" h="0.3"/>-->
@@ -110,34 +110,34 @@
     </collision>
     
     <inertial> 
-      <origin rpy="0.0 0.0 0.0" xyz="0.0 ${wheel_width/2} 0.0"/>
+      <origin rpy="0.0 ${PI/2} ${PI/2}" xyz="0.0 ${wheel_width/2} 0.0"/>
 	    <mass value="${wheel_mass}" />
 	    <cylinder_inertia m="${wheel_mass}" r="${wheel_radius}" h="${wheel_width}"/>
 	  </inertial>
   </link>
 
-  <gazebo reference="$(arg prefix)front_left_wheel_traction_link">
-    <material>Gazebo/DarkGrey</material>
+  <gazebo reference="front_left_wheel_traction_link">
+    <material>Gazebo/Grey</material>
     <mu1 value="${mu_1}"/>
   </gazebo>
 
 
   <xacro:wheel_steer_transmission prefix="$(arg prefix)front_left_wheel_steer" />
-  <xacro:wheel_traction_transmission prefix="$(arg prefix)front_left_wheel_traction" />
+<!--  <xacro:wheel_traction_transmission prefix="$(arg prefix)front_left_wheel_traction" />-->
 
 
 
-<!--  <!- - left_front_axle_transmission - ->-->
-<!--  <transmission name="$(arg prefix)front_left_wheel_traction_transmission">-->
-<!--    <type>trasnmission_interface/SimpleTransmission</type>-->
-<!--    <joint name="$(arg prefix)front_left_wheel_traction_joint">-->
-<!--      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>-->
-<!--    </joint>-->
-<!--    <actuator name="$(arg prefix)front_left_wheel_traction_motor">    -->
-<!--      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>-->
-<!--      <mechanicalReduction>1</mechanicalReduction>-->
-<!--    </actuator>-->
-<!--  </transmission>-->
+  <!-- left_front_axle_transmission -->
+  <transmission name="$(arg prefix)front_left_wheel_traction_transmission">
+    <type>trasnmission_interface/SimpleTransmission</type>
+    <joint name="$(arg prefix)front_left_wheel_traction_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="$(arg prefix)front_left_wheel_traction_motor">    
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
 
 
 
@@ -152,7 +152,7 @@
 
 
 <!--  <gazebo reference="left_front_wheel">-->
-<!--    <material>Gazebo/DarkGrey</material>-->
+<!--    <material>Gazebo/Grey</material>-->
 <!--			<mu1 value="1.0"/>-->
 <!--			<mu2 value="1.0"/>-->
 <!--			<kp value="10000000.0" />-->
@@ -187,7 +187,7 @@
     </visual>
    
     <inertial> 
-      <origin rpy="${PI/2} 0.0 0.0" xyz="0.0 0.0 -${steer_z/2}"/>
+      <origin rpy="0.0 0.0 ${PI}" xyz="0.0 0.0 -${steer_z/2}"/>
 	    <mass value="0.1" />
 	    <!--OLD-->
         <!--<cylinder_inertia m="1.0" r="0.01" h="0.3"/>-->
@@ -230,7 +230,7 @@
     </collision>
     
     <inertial> 
-      <origin rpy="0.0 0.0 0.0" xyz="0.0 -${wheel_width/2} 0.0"/>
+      <origin rpy="0.0 ${PI/2} ${PI/2}" xyz="0.0 -${wheel_width/2} 0.0"/>
 	    <mass value="${wheel_mass}"/>
 	    <cylinder_inertia m="${wheel_mass}" r="${wheel_radius}" h="${wheel_width}"/>
 	  </inertial>
@@ -239,13 +239,8 @@
   <xacro:wheel_steer_transmission prefix="$(arg prefix)front_right_wheel_steer" />
   <xacro:wheel_traction_transmission prefix="$(arg prefix)front_right_wheel_traction" />
 
-  <gazebo reference="$(arg prefix)front_right_wheel_traction_link">
-    <material>Gazebo/DarkGrey</material>
-    <mu1 value="${mu_1}"/>
-  </gazebo>
-
 <!--  <gazebo reference="right_front_wheel">-->
-<!--    <material>Gazebo/DarkGrey</material> -->
+<!--    <material>Gazebo/Grey</material> -->
 <!--    <mu1 value="1.0"/>-->
 <!--			<mu2 value="1.0"/>-->
 <!--			<kp value="10000000.0" />-->
@@ -281,14 +276,14 @@
     </visual>
 
     <inertial> 
-      <origin rpy="${PI/2} 0.0 0.0" xyz="0.0 0.0 -${steer_z/2}"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -${steer_z/2+0.2}"/>
 	    <mass value="0.1" />
-        <!--OLD-->
+	    <!--OLD-->
         <!--<cylinder_inertia m="1.0" r="0.01" h="0.3"/>-->
         <!--NEW-->
         <cylinder_inertia m="0.1" r="0.16" h="0.02"/>
-	  </inertial>
 
+	  </inertial>
   </link>
 
   <gazebo reference="$(arg prefix)back_left_wheel_steer_link"><material>Gazebo/Grey</material></gazebo>
@@ -325,7 +320,7 @@
     </collision>
     
     <inertial> 
-      <origin rpy="0.0 0.0 0.0" xyz="0.0 ${wheel_width/2} 0.0"/>
+      <origin rpy="0.0 ${PI/2} ${PI/2}" xyz="0.0 ${wheel_width/2} 0.0"/>
 	    <mass value="${wheel_mass}" />
 	    <cylinder_inertia m="${wheel_mass}" r="${wheel_radius}" h="${wheel_width}"/>
 	  </inertial>
@@ -334,14 +329,8 @@
   <xacro:wheel_steer_transmission prefix="$(arg prefix)back_left_wheel_steer" />
   <xacro:wheel_traction_transmission prefix="$(arg prefix)back_left_wheel_traction" />
 
-
-  <gazebo reference="$(arg prefix)back_left_wheel_traction_link">
-    <material>Gazebo/DarkGrey</material>
-    <mu1 value="${mu_1}"/>
-  </gazebo>
-
 <!--  <gazebo reference="left_rear_wheel">-->
-<!--    <material>Gazebo/DarkGrey</material> -->
+<!--    <material>Gazebo/Grey</material> -->
 <!--    <mu1 value="1.0"/>-->
 <!--			<mu2 value="1.0"/>-->
 <!--			<kp value="10000000.0" />-->
@@ -380,9 +369,9 @@
     </visual>
    
     <inertial> 
-      <origin rpy="${PI/2} 0.0 0.0" xyz="0.0 0.0 -${steer_z/2}"/>
+      <origin rpy="0.0 0.0 ${PI}" xyz="0.0 0.0 -${steer_z/2+0.2}"/>
 	    <mass value="0.1" />
-        <!--OLD-->
+	    <!--OLD-->
         <!--<cylinder_inertia m="1.0" r="0.01" h="0.3"/>-->
         <!--NEW-->
         <cylinder_inertia m="0.1" r="0.16" h="0.02"/>
@@ -423,7 +412,7 @@
     </collision>
     
     <inertial> 
-      <origin rpy="0.0 0.0 0.0" xyz="0.0 -${wheel_width/2} 0.0"/>
+      <origin rpy="0.0 ${PI/2} ${PI/2}" xyz="0.0 -${wheel_width/2} 0.0"/>
 	    <mass value="${wheel_mass}" />
 	    <cylinder_inertia m="${wheel_mass}" r="${wheel_radius}" h="${wheel_width}"/>
 	  </inertial>
@@ -432,16 +421,9 @@
   <xacro:wheel_steer_transmission prefix="$(arg prefix)back_right_wheel_steer" />
   <xacro:wheel_traction_transmission prefix="$(arg prefix)back_right_wheel_traction" />
 
-  <gazebo reference="$(arg prefix)back_right_wheel_traction_link">
-    <material>Gazebo/DarkGrey</material>
-    <mu1 value="${mu_1}"/>
-  </gazebo>
-
-
-
 
 <!--  <gazebo reference="right_rear_wheel">-->
-<!--    <material>Gazebo/DarkGrey</material> -->
+<!--    <material>Gazebo/Grey</material> -->
 <!--    <mu1 value="1.0"/>-->
 <!--			<mu2 value="1.0"/>-->
 <!--			<kp value="10000000.0" />-->

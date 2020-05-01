@@ -25,11 +25,11 @@
      
     <inertial> 
       <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 ${(1.888-(chassis_z+chassis_field_height))/2}" />
-      <mass value="1.0" />
-      <box_inertia  m="1.0" h="${lsp_x}" w ="${lsp_y}" d="${(1.888-(chassis_z+chassis_field_height))}"/>
+      <mass value="0.5" />
+      <box_inertia  m="0.5" h="${lsp_x}" w ="${lsp_y}" d="${(1.888-(chassis_z+chassis_field_height))}"/>
     </inertial>
 </link>
-<gazebo reference="${prefix}torso_elevator_link"><material>Gazebo/Black</material></gazebo>
+<gazebo reference="${prefix}torso_elevator_link"><material>Gazebo/DarkGrey</material></gazebo>
 
 <joint name="fake_torso_elevator_joint" type="fixed">
     <parent link="${prefix}base_link"/>
@@ -47,11 +47,11 @@
      
     <inertial> 
       <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 ${(1.89120-(chassis_z+chassis_field_height))/2}" />
-      <mass value="1.0" />
-      <box_inertia  m="1.0" h="${lsp_x}" w ="${lsp_y}" d="${(1.888-(chassis_z+chassis_field_height))}"/>
+      <mass value="0.5" />
+      <box_inertia  m="0.5" h="${lsp_x}" w ="${lsp_y}" d="${(1.888-(chassis_z+chassis_field_height))}"/>
     </inertial>
 </link>
-<gazebo reference="fake_torso_elevator_link"><material>Gazebo/Black</material></gazebo>
+<gazebo reference="fake_torso_elevator_link"><material>Gazebo/DarkGrey</material></gazebo>
 
 <!-- Pan -->
 <joint name="${prefix}torso_pantilt_pan_joint" type="revolute">
@@ -72,11 +72,11 @@
      
     <inertial> 
       <origin rpy="0.0 0.0 0.0" xyz="0 0 ${pan_z/2}"/>
-      <mass value="1" />
-      <box_inertia  m="1" h="${pan_x}" w ="${pan_y}" d="${pan_z}"/>
+      <mass value="0.5" />
+      <box_inertia  m="0.5" h="${pan_x}" w ="${pan_y}" d="${pan_z}"/>
     </inertial>
 </link>
-<gazebo reference="${prefix}torso_pantilt_pan_link"><material>Gazebo/Grey</material></gazebo>
+<gazebo reference="${prefix}torso_pantilt_pan_link"><material>Gazebo/DarkGrey</material></gazebo>
 
 
 </robot>

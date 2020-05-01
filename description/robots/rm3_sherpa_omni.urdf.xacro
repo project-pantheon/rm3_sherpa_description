@@ -17,29 +17,69 @@
 		      </geometry>
 		</visual>
 	    
-		<collision>
-			<origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 ${chassis_field_height}"/>
-			<geometry>
-				<box size="0.001 0.001 0.001"/>
-			</geometry>
-		</collision>
+<!--		<collision>-->
+<!--			<origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 ${chassis_field_height}"/>-->
+<!--			<geometry>-->
+<!--				<box size="0.001 0.001 0.001"/>-->
+<!--			</geometry>-->
+<!--		</collision>-->
 	</link>
   
-	<joint name="${prefix}base_footprint_joint" type="fixed">
+<!--	<joint name="${prefix}base_footprint_joint" type="fixed">-->
+<!--		<parent link="baselink"/>-->
+<!--		<child link="${prefix}base_link"/>-->
+<!--<!- -        <origin xyz="0.0 0.0 0.0"/>- ->-->
+<!--		<origin xyz="0.622 0.0 0.0"/>-->
+<!--	</joint>-->
+<!--	-->
+<!--<!- - Chassis - ->-->
+<!--	<link name="${prefix}base_link">-->
+<!--		<visual>-->
+<!--			<origin rpy="0.0 0.0 ${PI}" xyz="0.0 0.0 ${chassis_z/2-0.0150}"/>-->
+<!--			<geometry>-->
+<!--<mesh filename="package://rm3_sherpa_description/description/meshes/rbsherpa_hl_base_tank.dae" />-->
+<!--			</geometry>-->
+<!--		</visual>-->
+<!--     -->
+<!--		<collision>-->
+<!--			<origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 ${chassis_field_height+chassis_z/2}"/>-->
+<!--			<geometry>-->
+<!--				<box size="${chassis_x} ${chassis_y} ${chassis_z}"/>-->
+<!--			</geometry>-->
+<!--		</collision>-->
+<!--     -->
+<!--		<inertial> -->
+<!--			<origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 ${chassis_field_height+chassis_z/2}"/>-->
+<!--			<mass value="${mass}"/>-->
+<!--			<box_inertia  m="${mass}" h="${chassis_x}" w ="${chassis_y}" d="${chassis_z}"/>-->
+<!--		</inertial>-->
+<!--	</link>-->
+<!--	-->
+<!--	<gazebo reference="${prefix}base_link"><material>Gazebo/Red</material></gazebo>-->
+
+
+    <joint name="${prefix}base_footprint_joint" type="fixed">
 		<parent link="baselink"/>
 		<child link="${prefix}base_link"/>
-<!--        <origin xyz="0.0 0.0 0.0"/>-->
+
 		<origin xyz="0.622 0.0 0.0"/>
 	</joint>
 	
 <!-- Chassis -->
 	<link name="${prefix}base_link">
-		<visual>
+        <visual>-->
 			<origin rpy="0.0 0.0 ${PI}" xyz="0.0 0.0 ${chassis_z/2-0.0150}"/>
 			<geometry>
 <mesh filename="package://rm3_sherpa_description/description/meshes/rbsherpa_hl_base_tank.dae" />
 			</geometry>
 		</visual>
+
+<!--		<visual>-->
+<!--			<origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 ${chassis_field_height+chassis_z/2}"/>-->
+<!--			<geometry>-->
+<!--				<box size="${chassis_x} ${chassis_y} ${chassis_z}"/>-->
+<!--			</geometry>-->
+<!--		</visual>-->
      
 		<collision>
 			<origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 ${chassis_field_height+chassis_z/2}"/>
@@ -50,12 +90,20 @@
      
 		<inertial> 
 			<origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 ${chassis_field_height+chassis_z/2}"/>
-			<mass value="${mass}"/>
-			<box_inertia  m="${mass}" h="${chassis_x}" w ="${chassis_y}" d="${chassis_z}"/>
+			<mass value="1"/>
+			<box_inertia  m="1" h="${chassis_x}" w ="${chassis_y}" d="${chassis_z}"/>
 		</inertial>
+
 	</link>
-	
-	<gazebo reference="${prefix}base_link"><material>Gazebo/Red</material></gazebo>
+
+
+  <gazebo reference="${prefix}base_link">
+    <material>Gazebo/Red</material>
+    <mu1 value="${mu_1}"/>
+  </gazebo>
+
+
+
 <!-- ros_control plugin -->
 	<gazebo>
 		<static>false</static>
@@ -75,6 +123,29 @@
 <xacro:include filename="$(find rm3_sherpa_description)/description/urdf/sherpa_wheel.xacro"/>
 
 <xacro:include filename="$(find rm3_sherpa_description)/description/urdf/sensors.xacro"/>
+
+
+  <!-- GAZEBO -->
+  <!-- ros_control plugin -->
+  <gazebo>
+
+    <plugin name="ground_truth" filename="libgazebo_ros_p3d.so">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>100.0</updateRate>
+      <bodyName>baselink</bodyName>
+      <topicName>/odom_gps</topicName>
+      <gaussianNoise>0.00</gaussianNoise>
+      <frameName>/map</frameName>
+      <xyzOffsets>0 0 0</xyzOffsets>
+      <rpyOffsets>0 0 0</rpyOffsets>
+    </plugin>
+
+    <!-- ros_control plugin -->
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+          <legacyModeNS>true</legacyModeNS>
+          </plugin>
+  </gazebo>
+
 
 
 </robot>

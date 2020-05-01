@@ -12,7 +12,8 @@
 		<visual>
 			<origin xyz="0 0 0" rpy="0 0 0"/>
 			<geometry>
-				<box size="0.1 0.1 0.1"/>
+<!--				<box size="0.1 0.1 0.1"/>-->
+                <cylinder radius="0.05" length="0.1"/>
 			</geometry>
 		</visual>
 		
@@ -35,7 +36,7 @@
 	<gazebo reference="${prefix}front_laser_link">
 		<sensor type="ray" name="Sick S300_1">
 			<pose>0 0 0 0 0 0</pose>
-			<visualize>true</visualize>
+			<visualize>false</visualize>
 			<update_rate>12.5</update_rate>
 			<ray>
 				<scan>
@@ -58,6 +59,7 @@
 				<frameName>${prefix}front_laser_link</frameName>
 			</plugin>
 		</sensor>
+        <material>Gazebo/Yellow</material>
 	</gazebo>
 	
 <!-- Rear Sick -->
@@ -66,8 +68,10 @@
 		<visual>
 			<origin xyz="0 0 0" rpy="0 0 0"/>
 			<geometry>
-				<box size="0.1 0.1 0.1"/>
+<!--				<box size="0.1 0.1 0.1"/>-->
+                <cylinder radius="0.05" length="0.1"/>
 			</geometry>
+
 		</visual>
 		
 		<inertial>
@@ -85,11 +89,11 @@
 		<parent link="${prefix}base_link"/>
 		<child link="${prefix}rear_laser_link"/>
 	</joint>
-    
+
 	<gazebo reference="${prefix}rear_laser_link">
 		<sensor type="ray" name="Sick S300_rear">
 			<pose>0 0 0 0 0 0</pose>
-			<visualize>true</visualize>
+			<visualize>false</visualize>
 			<update_rate>12.5</update_rate>
 			<ray>
 				<scan>
@@ -112,6 +116,7 @@
 				<frameName>${prefix}rear_laser_link</frameName>
 			</plugin>
 		</sensor>
+	    <material>Gazebo/Yellow</material>
 	</gazebo>
 
 
@@ -140,7 +145,9 @@
 			
 	</link>
 	
-	<gazebo reference="gps_support"><material>Gazebo/Black</material></gazebo>
+	<gazebo reference="gps_support">
+        <material>Gazebo/Black</material>
+    </gazebo>
 	
 	<joint name="gps_joint" type="fixed">
 		<parent link="${prefix}base_link"/>
@@ -212,12 +219,14 @@
 
 			<origin xyz="0 0 0" rpy="0 0 0"/>
 
-			<mass value="10.0" />
-			<box_inertia  m="10.0" h="0.10" w ="0.20" d="0.150"/>
+			<mass value="1.0" />
+			<box_inertia  m="1.0" h="0.10" w ="0.20" d="0.150"/>
 		</inertial>	
 	</link>
 	
-	<gazebo reference="faro"><material>Gazebo/Grey</material></gazebo>
+	<gazebo reference="faro">
+        <material>Gazebo/DarkGrey</material>
+    </gazebo>
 	
 <!-- Gimball -->
 
@@ -238,12 +247,14 @@
 		</visual>
 		
 		<inertial>
-			<mass value="1.0" />
+			<mass value="0.5" />
 			<origin xyz="0 0 0" rpy="0 0 0"/>
-			<box_inertia  m="1.0" h="0.040" w ="0.040" d="0.15180"/>
+			<box_inertia  m="0.5" h="0.040" w ="0.040" d="0.15180"/>
 		</inertial>	
 	</link>
-	<gazebo reference="support_yaw"><material>Gazebo/Grey</material></gazebo>	
+	<gazebo reference="support_yaw">
+        <material>Gazebo/DarkGrey</material>
+    </gazebo>	
 	
 	<joint name="${prefix}gimbal_yaw_joint" type="revolute">
 		<parent link="${prefix}torso_pantilt_pan_link"/>
@@ -263,13 +274,15 @@
 		</visual>
 		
 		<inertial>
-			<mass value="1.0" />
+			<mass value="0.5" />
 			<origin xyz="0 0 0" rpy="0 0 0"/>
-			<box_inertia  m="1.0" h="0.340" w ="0.050" d="0.020"/>
+			<box_inertia  m="0.5" h="0.340" w ="0.050" d="0.020"/>
 		</inertial>	
 	</link>
 	
-	<gazebo reference="${prefix}gimbal_yaw_link"><material>Gazebo/Grey</material></gazebo>
+	<gazebo reference="${prefix}gimbal_yaw_link">
+        <material>Gazebo/DarkGrey</material>
+    </gazebo>
 	
 <!--	<joint name="yaw_roll_joint" type="fixed">-->
 <!--		<parent link="yaw"/>-->
@@ -314,14 +327,16 @@
 		</visual>
 		
 		<inertial>
-			<mass value="2.0" />
+			<mass value="0.5" />
 			<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-			<box_inertia  m="2.0" h="0.20" w ="0.340" d="0.050"/>
+			<box_inertia  m="0.5" h="0.20" w ="0.340" d="0.050"/>
 		</inertial>
 			
 	</link>
 	
-	<gazebo reference="${prefix}gimbal_roll_link"><material>Gazebo/Grey</material></gazebo>	
+	<gazebo reference="${prefix}gimbal_roll_link">
+        <material>Gazebo/DarkGrey</material>
+    </gazebo>	
 	
 <!--	<joint name="pitch_support_joint" type="fixed">-->
 <!--		<parent link="roll"/>-->
@@ -388,13 +403,16 @@
 		</visual>
 		
 		<inertial>
-			<mass value="1.0"/>
+			<mass value="0.5"/>
 			<origin xyz="0.0 0.140 0.0" rpy="0.0 0.0 0.0"/>
-			<box_inertia  m="1.0" h="0.0050" w ="0.20" d="0.190"/>
+			<box_inertia  m="0.5" h="0.0050" w ="0.20" d="0.190"/>
 		</inertial>	
 	</link>
-	<gazebo reference="${prefix}gimbal_pitch_link"><material>Gazebo/Grey</material></gazebo>	
+	<gazebo reference="${prefix}gimbal_pitch_link">
+        <material>Gazebo/DarkGrey</material>
+    </gazebo>	
 	
+
 	
 	<joint name="camera_joint" type="fixed">
 		<parent link="${prefix}gimbal_pitch_link"/>
@@ -413,9 +431,9 @@
 		</visual>
 		
 		<inertial>
-			<mass value="1.0" />
+			<mass value="0.5" />
 			<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-			<box_inertia  m="1.0" h="0.020" w ="0.020" d="0.020"/>
+			<box_inertia  m="0.5" h="0.020" w ="0.020" d="0.020"/>
 		</inertial>
 			
 	</link>
@@ -425,6 +443,53 @@
 		<child link="micasense"/>
 		<origin xyz="0.11540 0.14610 0.06410" rpy="0.0 0.0 0.0"/>
 	</joint>
+
+
+
+    <!-- camera -->
+    <gazebo reference="camera">
+        <sensor type="camera" name="camera">
+          <update_rate>30.0</update_rate>
+          <camera name="head">
+            <horizontal_fov>1.3962634</horizontal_fov>
+            <image>
+              <width>800</width>
+              <height>800</height>
+              <format>R8G8B8</format>
+            </image>
+            <clip>
+              <near>0.02</near>
+              <far>300</far>
+            </clip>
+            <noise>
+              <type>gaussian</type>
+              <!-- Noise is sampled independently per pixel on each frame.
+                   That pixel's noise value is added to each of its color
+                   channels, which at that point lie in the range [0,1]. -->
+              <mean>0.0</mean>
+              <stddev>0.007</stddev>
+            </noise>
+          </camera>
+          <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+            <alwaysOn>true</alwaysOn>
+            <updateRate>0.0</updateRate>
+            <cameraName>camera</cameraName>
+            <imageTopicName>image_raw</imageTopicName>
+            <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+            <frameName>camera</frameName>
+            <hackBaseline>0.07</hackBaseline>
+            <distortionK1>0.0</distortionK1>
+            <distortionK2>0.0</distortionK2>
+            <distortionK3>0.0</distortionK3>
+            <distortionT1>0.0</distortionT1>
+            <distortionT2>0.0</distortionT2>
+          </plugin>
+        </sensor>
+      </gazebo>
+
+
+
+
 	
 	
 	<link name="micasense">
@@ -437,15 +502,15 @@
 		</visual>
 		
 		<inertial>
-			<mass value="1.0" />
+			<mass value="0.5" />
 			<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-			<box_inertia  m="1.0" h="0.020" w ="0.020" d="0.020"/>
+			<box_inertia  m="0.5" h="0.020" w ="0.020" d="0.020"/>
 		</inertial>
 			
 	</link>
 	
 	
-<!-- IMU -->
+    <!-- IMU -->
 	<joint name="imu_joint" type="fixed">
 		<parent link="${prefix}base_link"/>
 		<child link="imu"/>
@@ -492,6 +557,10 @@
 		</inertial>
 			
 	</link>
+
+    <gazebo reference="${prefix}velodyne_base_link">
+        <material>Gazebo/DarkGrey</material>
+    </gazebo>
 
 <!--
 	<link name="velodyne_cover">
