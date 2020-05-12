@@ -92,7 +92,8 @@ back_right_wheel_steer_joint_controller:
 pan_controller:
   joint: rbsherpa_hl_torso_pantilt_pan_joint
   type: effort_controllers/JointPositionController
-  pid: {p: 10.0, i: 0.01, d: 40.0}
+#  pid: {p: 10.0, i: 0.01, d: 40.0}
+  pid: {p: 100.0, i: 0.01, d: 30.0}
 lift_controller:
   joint: rbsherpa_hl_torso_elevator_joint
   type: effort_controllers/JointPositionController

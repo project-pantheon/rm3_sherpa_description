@@ -45,6 +45,9 @@
         
         <node name="sherpa_ros_urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf -model $(arg robot_name) -param robot_description -z 0.1 -R 0"/>
 
+        <!-- Gazebo Gimbal>-->
+        <node name="gimbal_gazebo" pkg="rm3_sherpa_description" type="virtual_gimbal.py" />
+
         <!-- Kinematic control -->
         <node name="akrm_cmd" pkg="rm3_sherpa_description" type="omni-ackermann_cmd_node"/> 
 
