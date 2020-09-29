@@ -1,0 +1,7 @@
+<launch>
+
+   <arg name="prefix" default="rbsherpa_hl_"/>
+   <param name="tf_prefix" value="rbsherpa_hl_"/>
+   <param name="robot_description" command="$(find xacro)/xacro.py '$(find rm3_sherpa_description)/description/robots/rm3_sherpa_omni.urdf.xacro' prefix:=$(arg prefix) sim:=false --inorder"/>
+  
+</launch>

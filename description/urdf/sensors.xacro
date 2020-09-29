@@ -120,7 +120,7 @@
 	</gazebo>
 
 
-<!-- GPS -->
+<!-- GPS original- ->
 	
 	<joint name="gps_support_joint" type="fixed">
 		<parent link="gps"/>
@@ -171,6 +171,62 @@
 		</inertial>
 			
 	</link>
+	
+	-->
+	
+	<!-- GPS -->
+	
+	<joint name="gps_support_joint" type="fixed">
+		<parent link="gps"/>
+		<child link="gps_support"/>
+		<origin xyz="0.0 0.0 -0.15" rpy="0 0 0"/>
+	</joint>
+	
+	<link name="gps_support">
+		
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+        			<cylinder radius="0.0090" length="0.30"/>
+			</geometry>
+		</visual>
+		
+		<inertial>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<mass value="0.50" />
+	    		<cylinder_inertia m="0.50" r="0.0090" h="0.30"/>
+		</inertial>
+			
+	</link>
+	
+	<gazebo reference="gps_support">
+        <material>Gazebo/Black</material>
+    </gazebo>
+	
+	<joint name="gps_joint" type="fixed">
+		<parent link="${prefix}base_link"/>
+		<child link="gps"/>
+		<origin xyz="-0.622 0.0 2.150" rpy="0 0 0"/>
+	</joint>
+	
+	<link name="gps">
+		
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+        			<cylinder radius="0.090" length="0.040"/>
+			</geometry>
+		</visual>
+		
+		<inertial>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<mass value="0.50" />
+	    		<cylinder_inertia m="0.50" r="0.090" h="0.040"/>
+		</inertial>
+			
+	</link>	
+	
+	
 	
 <!-- Faro -->
 
