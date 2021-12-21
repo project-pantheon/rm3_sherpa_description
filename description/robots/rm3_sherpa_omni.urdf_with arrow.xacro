@@ -103,9 +103,39 @@
 <!--  </gazebo>-->
 
   <gazebo reference="${prefix}base_link">
-    <material>Gazebo/Red</material>
+    <material>Gazebo/Sherpa_1</material>
     <mu1 value="${mu_1}"/>
   </gazebo>
+
+
+  <joint name="baselink_to_arrow" type="fixed">
+    <parent link="${prefix}base_link"/>
+    <child link="arrow"/>
+    <origin xyz=" 0 0 0"/>
+  </joint>
+
+  <link name="arrow">
+    <visual>
+        <geometry>
+            <mesh filename="package://rm3_sherpa_description/description/meshes/arrow.dae" />
+        </geometry>
+      <origin rpy="0 0 0" xyz="0 0 5"/>
+      <material name="red"/>
+    </visual>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="1e-8"/>
+      <inertia
+	  ixx="1e-9" ixy="0.0" ixz="0.0"
+	  iyy="1e-9" iyz="0.0"
+	  izz="1e-9"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="arrow">
+    <material>Gazebo/Sherpa_1</material>
+  </gazebo>
+
 
 
 
@@ -138,7 +168,7 @@
       <alwaysOn>true</alwaysOn>
       <updateRate>100.0</updateRate>
       <bodyName>baselink</bodyName>
-      <topicName>/ekf_slam_node/slam_odom</topicName>
+      <topicName>/ekf_localization_slam_node/slam_odom_magnetic</topicName>
       <gaussianNoise>0.00</gaussianNoise>
       <frameName>/map</frameName>
       <xyzOffsets>0 0 0</xyzOffsets>

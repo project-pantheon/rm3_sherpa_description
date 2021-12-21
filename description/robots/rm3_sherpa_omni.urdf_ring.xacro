@@ -67,7 +67,7 @@
 	
 <!-- Chassis -->
 	<link name="${prefix}base_link">
-        <visual>-->
+        <visual>
 			<origin rpy="0.0 0.0 ${PI}" xyz="0.0 0.0 ${chassis_z/2-0.0150}"/>
 			<geometry>
 <mesh filename="package://rm3_sherpa_description/description/meshes/rbsherpa_hl_base_tank.dae" />
@@ -103,10 +103,179 @@
 <!--  </gazebo>-->
 
   <gazebo reference="${prefix}base_link">
-    <material>Gazebo/Red</material>
+    <material>Gazebo/Sherpa_1</material>
     <mu1 value="${mu_1}"/>
   </gazebo>
 
+
+  <joint name="baselink_to_ring" type="fixed">
+    <parent link="${prefix}base_link"/>
+    <child link="ring"/>
+    <origin xyz="0.881 0 0"/>
+  </joint>
+
+  <link name="ring">
+    <visual>
+        <geometry>
+<!--            <cylinder radius="8" length="0.05"/>-->
+            <box size="16 16 0.05"/>
+        </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="black_transparent">
+        <color rgba="${255/255} ${255/255} ${255/255} 0.2"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="1e-8"/>
+      <inertia
+	  ixx="1e-9" ixy="0.0" ixz="0.0"
+	  iyy="1e-9" iyz="0.0"
+	  izz="1e-9"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="ring">
+      <material name="black_transparent">
+        <color rgba="${255/255} ${255/255} ${255/255} 0.2"/>
+      </material>
+  </gazebo>
+
+
+  <joint name="baselink_to_ring1" type="fixed">
+    <parent link="${prefix}base_link"/>
+    <child link="ring1"/>
+    <origin xyz="0.881 0 0"/>
+  </joint>
+
+  <link name="ring1">
+    <visual>
+        <geometry>
+<!--            <cylinder radius="7" length="0.05"/>-->
+            <box size="14 14 0.05"/>
+        </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="black_transparent">
+        <color rgba="${255/255} ${255/255} ${255/255} 0.05"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="1e-8"/>
+      <inertia
+	  ixx="1e-9" ixy="0.0" ixz="0.0"
+	  iyy="1e-9" iyz="0.0"
+	  izz="1e-9"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="ring1">
+      <material name="black_transparent">
+        <color rgba="${255/255} ${255/255} ${255/255} 0.05"/>
+      </material>
+  </gazebo>
+
+
+  <joint name="baselink_to_ring2" type="fixed">
+    <parent link="${prefix}base_link"/>
+    <child link="ring2"/>
+    <origin xyz="0.881 0 0"/>
+  </joint>
+
+  <link name="ring2">
+    <visual>
+        <geometry>
+<!--            <cylinder radius="6" length="0.05"/>-->
+            <box size="12 12 0.05"/>
+        </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="black_transparent">
+        <color rgba="${255/255} ${255/255} ${255/255} 0.05"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="1e-8"/>
+      <inertia
+	  ixx="1e-9" ixy="0.0" ixz="0.0"
+	  iyy="1e-9" iyz="0.0"
+	  izz="1e-9"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="ring2">
+      <material name="black_transparent">
+        <color rgba="${255/255} ${255/255} ${255/255} 0.05"/>
+      </material>
+  </gazebo>
+
+
+  <joint name="baselink_to_ring3" type="fixed">
+    <parent link="${prefix}base_link"/>
+    <child link="ring3"/>
+    <origin xyz="0.881 0 0"/>
+  </joint>
+
+  <link name="ring3">
+    <visual>
+        <geometry>
+<!--            <cylinder radius="5" length="0.05"/>-->
+            <box size="10 10 0.05"/>
+        </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="black_transparent">
+        <color rgba="${255/255} ${255/255} ${255/255} 0.05"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="1e-8"/>
+      <inertia
+	  ixx="1e-9" ixy="0.0" ixz="0.0"
+	  iyy="1e-9" iyz="0.0"
+	  izz="1e-9"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="ring3">
+      <material name="black_transparent">
+        <color rgba="${255/255} ${255/255} ${255/255} 0.05"/>
+      </material>
+  </gazebo>
+
+
+  <joint name="baselink_to_ring4" type="fixed">
+    <parent link="${prefix}base_link"/>
+    <child link="ring4"/>
+    <origin xyz="0.881 0 0"/>
+  </joint>
+
+  <link name="ring4">
+    <visual>
+        <geometry>
+<!--            <cylinder radius="4" length="0.05"/>-->
+            <box size="8 8 0.05"/>
+        </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="black_transparent">
+        <color rgba="${255/255} ${255/255} ${255/255} 0.05"/>
+      </material>
+    </visual>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="1e-8"/>
+      <inertia
+	  ixx="1e-9" ixy="0.0" ixz="0.0"
+	  iyy="1e-9" iyz="0.0"
+	  izz="1e-9"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="ring4">
+      <material name="black_transparent">
+        <color rgba="${255/255} ${255/255} ${255/255} 0.05"/>
+      </material>
+  </gazebo>
 
 
 <!-- ros_control plugin -->
@@ -138,7 +307,7 @@
       <alwaysOn>true</alwaysOn>
       <updateRate>100.0</updateRate>
       <bodyName>baselink</bodyName>
-      <topicName>/ekf_slam_node/slam_odom</topicName>
+      <topicName>/ekf_localization_slam_node/slam_odom_magnetic</topicName>
       <gaussianNoise>0.00</gaussianNoise>
       <frameName>/map</frameName>
       <xyzOffsets>0 0 0</xyzOffsets>

@@ -1,0 +1,849 @@
+<?xml version="1.0" ?>
+<!-- Sherpa -->
+<robot name="sherpa" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Base Link -->
+  <link name="baselink">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.001"/>
+      <geometry>
+        <box size="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+
+  </link>
+
+  <!-- Chassis -->
+  <joint name="rbsherpa_hl_base_footprint_joint" type="fixed">
+    <parent link="baselink"/>
+    <child link="rbsherpa_hl_base_link"/>
+    <origin xyz="0.622 0.0 0.0"/>
+  </joint>
+
+  <link name="rbsherpa_hl_base_link">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.6671"/>
+      <geometry>
+        <box size="1.6434 1.004 0.3944"/>
+      </geometry>
+    </visual>
+
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.6671"/>
+      <geometry>
+        <box size="1.6434 1.004 0.3944"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.6671"/>
+      <mass value="1"/>
+      <inertia ixx="0.0969639466667" ixy="0.0" ixz="0.0" iyy="0.238026243333" iyz="0.0" izz="0.309064963333"/>
+    </inertial>
+  </link>
+  <gazebo reference="rbsherpa_hl_base_link">
+    <material>Gazebo/Red</material>
+  </gazebo>
+
+
+  <!-- ros_control plugin -->
+  <gazebo>
+    <static>false</static>
+    <plugin filename="libgazebo_ros_control.so" name="gazebo_ros_control">
+      <robotNamespace>/sherpa</robotNamespace>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+      <legacyModeNS>true</legacyModeNS>
+    </plugin>
+  </gazebo>
+
+  <!-- Lift Link -->
+  <joint name="rbsherpa_hl_torso_elevator_joint" type="prismatic">
+    <parent link="rbsherpa_hl_base_link"/>
+    <child link="rbsherpa_hl_torso_elevator_link"/>
+    <origin rpy="0.0 0.0 0.0" xyz="-0.36280 0.0090 0.8643"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="1000" lower="0.0" upper="5" velocity="0.5"/>
+  </joint>
+  <link name="rbsherpa_hl_torso_elevator_link">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.51185"/>
+      <geometry>
+        <box size="0.04507 0.13725 1.0237"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.51185"/>
+      <mass value="0.5"/>
+      <inertia ixx="0.0444499688542" ixy="0.0" ixz="0.0" iyy="0.0437497081208" iyz="0.0" izz="0.000869536141667"/>
+    </inertial>
+  </link>
+  <gazebo reference="rbsherpa_hl_torso_elevator_link">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+  <joint name="fake_torso_elevator_joint" type="fixed">
+    <parent link="rbsherpa_hl_base_link"/>
+    <child link="fake_torso_elevator_link"/>
+    <origin xyz="-0.36280 0.0090 0.8643"/>
+  </joint>
+  <link name="fake_torso_elevator_link">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.51345"/>
+      <geometry>
+        <box size="0.04507 0.13725 1.0269"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.51345"/>
+      <mass value="0.5"/>
+      <inertia ixx="0.0444499688542" ixy="0.0" ixz="0.0" iyy="0.0437497081208" iyz="0.0" izz="0.000869536141667"/>
+    </inertial>
+  </link>
+  <gazebo reference="fake_torso_elevator_link">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+  <!-- Pan -->
+  <joint name="rbsherpa_hl_torso_pantilt_pan_joint" type="revolute">
+    <parent link="rbsherpa_hl_torso_elevator_link"/>
+    <child link="rbsherpa_hl_torso_pantilt_pan_link"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 1.0269"/>
+    <axis xyz="0.0 0.0 -1"/>
+    --&gt;
+	
+    <limit effort="1000" lower="-3.1415" upper="3.1415" velocity="0.2"/>
+  </joint>
+  <link name="rbsherpa_hl_torso_pantilt_pan_link">
+    <visual>
+      <origin rpy="0.0 0.0 3.14159265359" xyz="0.0 0.0 0.021455"/>
+      <geometry>
+        <box size="0.980915 0.07 0.04291"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <origin rpy="0.0 0.0 0.0" xyz="0 0 0.021455"/>
+      <mass value="0.5"/>
+      <inertia ixx="0.000280886170833" ixy="0.0" ixz="0.0" iyy="0.0401681460552" iyz="0.0" izz="0.0402955932177"/>
+    </inertial>
+  </link>
+  <gazebo reference="rbsherpa_hl_torso_pantilt_pan_link">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+
+  <!-- pan_transmission -->
+  <transmission name="rbsherpa_hl_torso_pantilt_pan_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rbsherpa_hl_torso_pantilt_pan_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rbsherpa_hl_torso_pantilt_pan_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </actuator>
+  </transmission>
+
+  <!-- lift_transmission-->
+  <transmission name="rbsherpa_hl_torso_elevator_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rbsherpa_hl_torso_elevator_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rbsherpa_hl_torso_elevator_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </actuator>
+  </transmission>
+
+  <!-- yaw_transmission NEW -->
+  <transmission name="rbsherpa_hl_gimbal_yaw_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rbsherpa_hl_gimbal_yaw_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rbsherpa_hl_gimbal_yaw_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </actuator>
+  </transmission>
+
+  <!-- roll_transmission NEW -->
+  <transmission name="rbsherpa_hl_gimbal_roll_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rbsherpa_hl_gimbal_roll_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rbsherpa_hl_gimbal_roll_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </actuator>
+  </transmission>
+
+  <!-- pitch_transmission NEW -->
+  <transmission name="rbsherpa_hl_gimbal_pitch_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rbsherpa_hl_gimbal_pitch_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rbsherpa_hl_gimbal_pitch_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </actuator>
+  </transmission>
+
+  <!-- Left Steering Wheel -->
+  <!--   Steering Mechanism -->
+  <joint name="rbsherpa_hl_front_left_wheel_steer_joint" type="revolute">
+    <parent link="rbsherpa_hl_base_link"/>
+    <child link="rbsherpa_hl_front_left_wheel_steer_link"/>
+    <origin xyz="0.622 0.367 0.4799"/>
+    <axis rpy="0 0 0" xyz="0 0 1"/>
+    <limit effort="30.0" lower="-3.13159265359" upper="3.14159265359" velocity="50.0"/>
+  </joint>
+
+  <link name="rbsherpa_hl_front_left_wheel_steer_link">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.018"/>
+      <geometry>
+        <mesh filename="package://rm3_sherpa_description/description/meshes/rbsherpa_hl_steer_wheel.dae"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <origin rpy="1.57079632679 0.0 0.0" xyz="0.0 0.0 -0.03"/>
+      <mass value="0.1"/>
+      <inertia ixx="0.000643333333333" ixy="0.0" ixz="0.0" iyy="0.00128" iyz="0.0" izz="0.000643333333333"/>
+    </inertial>
+  </link>
+  <gazebo reference="rbsherpa_hl_front_left_wheel_steer_link">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+  <!-- wheel -->
+  <joint name="rbsherpa_hl_front_left_wheel_traction_joint" type="continuous">
+    <parent link="rbsherpa_hl_front_left_wheel_steer_link"/>
+    <child link="rbsherpa_hl_front_left_wheel_traction_link"/>
+    <origin xyz="0.0 -0.03 -0.3066"/>
+    <axis xyz="0.0 1.0 0.0"/>
+  </joint>
+
+  <link name="rbsherpa_hl_front_left_wheel_traction_link">
+    <visual>
+      <origin rpy="0.0 1.57079632679 0.0" xyz="0.0 0.0571 0.0"/>
+      <geometry>
+        <mesh filename="package://rm3_sherpa_description/description/meshes/rbsherpa_hl_traction_wheel.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 1.57079632679 1.57079632679" xyz="0.0 0.0571 0.0"/>
+      <geometry>
+        <cylinder length="0.1142" radius="0.1743"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0571 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="0.00868192583333" ixy="0.0" ixz="0.0" iyy="0.015190245" iyz="0.0" izz="0.00868192583333"/>
+    </inertial>
+  </link>
+  <gazebo reference="rbsherpa_hl_front_left_wheel_traction_link">
+    <material>Gazebo/DarkGrey</material>
+    <mu1 value="9999999999999999999999999999999"/>
+  </gazebo>
+  <transmission name="rbsherpa_hl_front_left_wheel_steer_wheel_joint_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rbsherpa_hl_front_left_wheel_steer_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rbsherpa_hl_front_left_wheel_steer_wheel_joint_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1.0</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="rbsherpa_hl_front_left_wheel_traction_wheel_traction_joint_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rbsherpa_hl_front_left_wheel_traction_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rbsherpa_hl_front_left_wheel_traction_wheel_traction_joint_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1.0</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <!-- Steering Mechanism -->
+  <joint name="rbsherpa_hl_front_right_wheel_steer_joint" type="revolute">
+    <parent link="rbsherpa_hl_base_link"/>
+    <child link="rbsherpa_hl_front_right_wheel_steer_link"/>
+    <origin xyz="0.622 -0.367 0.4799"/>
+    <axis rpy="0 0 0" xyz="0 0 1"/>
+    <limit effort="30.0" lower="-3.13159265359" upper="3.14159265359" velocity="50.0"/>
+  </joint>
+
+  <link name="rbsherpa_hl_front_right_wheel_steer_link">
+    <visual>
+      <origin rpy="0.0 0.0 3.14159265359" xyz="0.0 0.0 -0.018"/>
+      <geometry>
+        <mesh filename="package://rm3_sherpa_description/description/meshes/rbsherpa_hl_steer_wheel.dae"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <origin rpy="1.57079632679 0.0 0.0" xyz="0.0 0.0 -0.03"/>
+      <mass value="0.1"/>
+      <inertia ixx="0.000643333333333" ixy="0.0" ixz="0.0" iyy="0.00128" iyz="0.0" izz="0.000643333333333"/>
+    </inertial>
+  </link>
+  <gazebo reference="rbsherpa_hl_front_right_wheel_steer_link">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+  <!-- wheel -->
+  <joint name="rbsherpa_hl_front_right_wheel_traction_joint" type="continuous">
+    <parent link="rbsherpa_hl_front_right_wheel_steer_link"/>
+    <child link="rbsherpa_hl_front_right_wheel_traction_link"/>
+    <origin xyz="0.0 0.03 -0.3066"/>
+    <axis xyz="0.0 1.0 0.0"/>
+  </joint>
+
+  <link name="rbsherpa_hl_front_right_wheel_traction_link">
+    <visual>
+      <origin rpy="0.0 1.57079632679 0.0" xyz="0.0 -0.0571 0.0"/>
+      <geometry>
+        <mesh filename="package://rm3_sherpa_description/description/meshes/rbsherpa_hl_traction_wheel.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 1.57079632679 1.57079632679" xyz="0.0 -0.0571 0.0"/>
+      <geometry>
+        <cylinder length="0.1142" radius="0.1743"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.0571 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="0.00868192583333" ixy="0.0" ixz="0.0" iyy="0.015190245" iyz="0.0" izz="0.00868192583333"/>
+    </inertial>
+  </link>
+  <transmission name="rbsherpa_hl_front_right_wheel_steer_wheel_joint_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rbsherpa_hl_front_right_wheel_steer_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rbsherpa_hl_front_right_wheel_steer_wheel_joint_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1.0</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="rbsherpa_hl_front_right_wheel_traction_wheel_traction_joint_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rbsherpa_hl_front_right_wheel_traction_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rbsherpa_hl_front_right_wheel_traction_wheel_traction_joint_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1.0</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <gazebo reference="rbsherpa_hl_front_right_wheel_traction_link">
+    <material>Gazebo/DarkGrey</material>
+    <mu1 value="9999999999999999999999999999999"/>
+  </gazebo>
+
+  <!-- Left rear Wheel -->
+  <!-- Support-->
+  <joint name="rbsherpa_hl_back_left_wheel_steer_joint" type="revolute">
+    <parent link="rbsherpa_hl_base_link"/>
+    <child link="rbsherpa_hl_back_left_wheel_steer_link"/>
+    <origin xyz="-0.622 0.367 0.4799"/>
+    <axis rpy="0 0 0" xyz="0 0 1"/>
+    <limit effort="30.0" lower="-3.13159265359" upper="3.14159265359" velocity="50.0"/>
+  </joint>
+
+  <link name="rbsherpa_hl_back_left_wheel_steer_link">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.018"/>
+      <geometry>
+        <mesh filename="package://rm3_sherpa_description/description/meshes/rbsherpa_hl_steer_wheel.dae"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <origin rpy="1.57079632679 0.0 0.0" xyz="0.0 0.0 -0.03"/>
+      <mass value="0.1"/>
+      <inertia ixx="0.000643333333333" ixy="0.0" ixz="0.0" iyy="0.00128" iyz="0.0" izz="0.000643333333333"/>
+    </inertial>
+  </link>
+  <gazebo reference="rbsherpa_hl_back_left_wheel_steer_link">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+  <!-- wheel -->
+  <joint name="rbsherpa_hl_back_left_wheel_traction_joint" type="continuous">
+    <parent link="rbsherpa_hl_back_left_wheel_steer_link"/>
+    <child link="rbsherpa_hl_back_left_wheel_traction_link"/>
+    <origin xyz="0.0 -0.03 -0.3066"/>
+    <axis xyz="0.0 1.0 0.0"/>
+  </joint>
+
+  <link name="rbsherpa_hl_back_left_wheel_traction_link">
+    <visual>
+      <origin rpy="0.0 1.57079632679 0.0" xyz="0.0 0.0571 0.0"/>
+      <geometry>
+        <mesh filename="package://rm3_sherpa_description/description/meshes/rbsherpa_hl_traction_wheel.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 1.57079632679 1.57079632679" xyz="0.0 0.0571 0.0"/>
+      <geometry>
+        <cylinder length="0.1142" radius="0.1743"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0571 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="0.00868192583333" ixy="0.0" ixz="0.0" iyy="0.015190245" iyz="0.0" izz="0.00868192583333"/>
+    </inertial>
+  </link>
+  <transmission name="rbsherpa_hl_back_left_wheel_steer_wheel_joint_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rbsherpa_hl_back_left_wheel_steer_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rbsherpa_hl_back_left_wheel_steer_wheel_joint_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1.0</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="rbsherpa_hl_back_left_wheel_traction_wheel_traction_joint_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rbsherpa_hl_back_left_wheel_traction_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rbsherpa_hl_back_left_wheel_traction_wheel_traction_joint_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1.0</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <gazebo reference="rbsherpa_hl_back_left_wheel_traction_link">
+    <material>Gazebo/DarkGrey</material>
+    <mu1 value="9999999999999999999999999999999"/>
+  </gazebo>
+
+  <!-- Support -->
+  <joint name="rbsherpa_hl_back_right_wheel_steer_joint" type="revolute">
+    <parent link="rbsherpa_hl_base_link"/>
+    <child link="rbsherpa_hl_back_right_wheel_steer_link"/>
+    <origin xyz="-0.622 -0.367 0.4799"/>
+    <axis rpy="0 0 0" xyz="0 0 1"/>
+    <limit effort="30.0" lower="-3.13159265359" upper="3.14159265359" velocity="50.0"/>
+  </joint>
+
+  <link name="rbsherpa_hl_back_right_wheel_steer_link">
+    <visual>
+      <origin rpy="0.0 0.0 3.14159265359" xyz="0.0 0.0 -0.018"/>
+      <geometry>
+        <mesh filename="package://rm3_sherpa_description/description/meshes/rbsherpa_hl_steer_wheel.dae"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <origin rpy="1.57079632679 0.0 0.0" xyz="0.0 0.0 -0.03"/>
+      <mass value="0.1"/>
+      <inertia ixx="0.000643333333333" ixy="0.0" ixz="0.0" iyy="0.00128" iyz="0.0" izz="0.000643333333333"/>
+    </inertial>
+  </link>
+  <gazebo reference="rbsherpa_hl_back_right_wheel_steer_link">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+  <!-- wheel -->
+  <joint name="rbsherpa_hl_back_right_wheel_traction_joint" type="continuous">
+    <parent link="rbsherpa_hl_back_right_wheel_steer_link"/>
+    <child link="rbsherpa_hl_back_right_wheel_traction_link"/>
+    <origin xyz="0.0 0.03 -0.3066"/>
+    <axis xyz="0.0 1 0.0"/>
+  </joint>
+  <link name="rbsherpa_hl_back_right_wheel_traction_link">
+    <visual>
+      <origin rpy="0.0 1.57079632679 0.0" xyz="0.0 -0.0571 0.0"/>
+      <geometry>
+        <mesh filename="package://rm3_sherpa_description/description/meshes/rbsherpa_hl_traction_wheel.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 1.57079632679 1.57079632679" xyz="0.0 -0.0571 0"/>
+      <geometry>
+        <cylinder length="0.1142" radius="0.1743"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.0571 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="0.00868192583333" ixy="0.0" ixz="0.0" iyy="0.015190245" iyz="0.0" izz="0.00868192583333"/>
+    </inertial>
+  </link>
+  <transmission name="rbsherpa_hl_back_right_wheel_steer_wheel_joint_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rbsherpa_hl_back_right_wheel_steer_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rbsherpa_hl_back_right_wheel_steer_wheel_joint_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1.0</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="rbsherpa_hl_back_right_wheel_traction_wheel_traction_joint_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rbsherpa_hl_back_right_wheel_traction_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rbsherpa_hl_back_right_wheel_traction_wheel_traction_joint_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1.0</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <gazebo reference="rbsherpa_hl_back_right_wheel_traction_link">
+    <material>Gazebo/DarkGrey</material>
+    <mu1 value="9999999999999999999999999999999"/>
+  </gazebo>
+  <!-- Front Sick -->
+  <link name="rbsherpa_hl_front_laser_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <!--				<box size="0.1 0.1 0.1"/>-->
+        <cylinder length="0.1" radius="0.05"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <mass value="1e-5"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
+    </inertial>
+  </link>
+  <joint name="sick_front_joint" type="fixed">
+    <axis xyz="0 1 0"/>
+    <origin rpy="3.14159265359 0 -0.785398163397" xyz="0.85070 -0.55260 0.25790"/>
+    <parent link="rbsherpa_hl_base_link"/>
+    <child link="rbsherpa_hl_front_laser_link"/>
+  </joint>
+  <gazebo reference="rbsherpa_hl_front_laser_link">
+    <sensor name="Sick S300_1" type="ray">
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>false</visualize>
+      <update_rate>12.5</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>541</samples>
+            <resolution>1</resolution>
+            <min_angle>-2.35619</min_angle>
+            <max_angle>2.35619</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.10</min>
+          <max>30.0</max>
+          <resolution>0.03</resolution>
+        </range>
+      </ray>
+      <plugin filename="libgazebo_ros_laser.so" name="sick_controller">
+        <topicName>/base/front_laser/scan</topicName>
+        <frameName>rbsherpa_hl_front_laser_link</frameName>
+      </plugin>
+    </sensor>
+    <material>Gazebo/Yellow</material>
+  </gazebo>
+  <!-- Rear Sick -->
+  <link name="rbsherpa_hl_rear_laser_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <!--				<box size="0.1 0.1 0.1"/>-->
+        <cylinder length="0.1" radius="0.05"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <mass value="1e-5"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
+    </inertial>
+  </link>
+  <joint name="sick_rear_joint" type="fixed">
+    <axis xyz="0 1 0"/>
+    <origin rpy="3.14159265359 0 2.35619449019" xyz="-0.84360 0.54280 0.24980"/>
+    <parent link="rbsherpa_hl_base_link"/>
+    <child link="rbsherpa_hl_rear_laser_link"/>
+  </joint>
+  <gazebo reference="rbsherpa_hl_rear_laser_link">
+    <sensor name="Sick S300_rear" type="ray">
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>false</visualize>
+      <update_rate>12.5</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>541</samples>
+            <resolution>1</resolution>
+            <min_angle>-2.35619</min_angle>
+            <max_angle>2.35619</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.10</min>
+          <max>30.0</max>
+          <resolution>0.03</resolution>
+        </range>
+      </ray>
+      <plugin filename="libgazebo_ros_laser.so" name="sick_controller">
+        <topicName>/base/rear_laser/scan</topicName>
+        <frameName>rbsherpa_hl_rear_laser_link</frameName>
+      </plugin>
+    </sensor>
+    <material>Gazebo/Yellow</material>
+  </gazebo>
+  
+  <!-- Faro -->
+  <joint name="faro_revolute_joint" type="fixed">
+    <parent link="rbsherpa_hl_torso_pantilt_pan_link"/>
+    <child link="faro"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.42830 0.00930 -0.21110"/>
+  </joint>
+  <link name="faro">
+    <visual>
+      <origin rpy="0 0 0" xyz="-0.38 0.00530 0.13230"/>
+      <geometry>
+        <mesh filename="package://rm3_sherpa_description/description/meshes/faro.dae"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="1.0"/>
+      <inertia ixx="0.00520833333333" ixy="0.0" ixz="0.0" iyy="0.00270833333333" iyz="0.0" izz="0.00416666666667"/>
+    </inertial>
+  </link>
+  <gazebo reference="faro">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+
+  <!-- Gimball -->
+  <joint name="arm_yaw_joint" type="fixed">
+    <parent link="rbsherpa_hl_torso_pantilt_pan_link"/>
+    <child link="support_yaw"/>
+    <origin rpy="0 0 0" xyz="-0.45470 0 -0.0759 "/>
+  </joint>
+  <link name="support_yaw">
+    <visual>
+      <origin rpy="0 0 0" xyz="0.45470 0 0"/>
+      <geometry>
+        <mesh filename="package://rm3_sherpa_description/description/meshes/gimbal_support_yaw.dae"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <mass value="0.5"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <inertia ixx="0.00102680166667" ixy="0.0" ixz="0.0" iyy="0.00102680166667" iyz="0.0" izz="0.000133333333333"/>
+    </inertial>
+  </link>
+  <gazebo reference="support_yaw">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+  <joint name="rbsherpa_hl_gimbal_yaw_joint" type="revolute">
+    <parent link="rbsherpa_hl_torso_pantilt_pan_link"/>
+    <child link="rbsherpa_hl_gimbal_yaw_link"/>
+    <origin rpy="0 0 3.14159265359" xyz="-0.45580 -0.01290 -0.14820"/>
+    <axis xyz="0 0 -1"/>
+    <limit effort="30.0" lower="-3.14149265359" upper="3.14149265359" velocity="50.0"/>
+  </joint>
+  <link name="rbsherpa_hl_gimbal_yaw_link">
+    <visual>
+      <origin rpy="0 0 3.14159265359" xyz="-0.45470 0 0.08180"/>
+      <geometry>
+        <mesh filename="package://rm3_sherpa_description/description/meshes/gimbal_yaw.dae"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <mass value="0.5"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <inertia ixx="0.000120833333333" ixy="0.0" ixz="0.0" iyy="0.00483333333333" iyz="0.0" izz="0.00492083333333"/>
+    </inertial>
+  </link>
+  <gazebo reference="rbsherpa_hl_gimbal_yaw_link">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+ 
+  <joint name="rbsherpa_hl_gimbal_roll_joint" type="revolute">
+    <parent link="rbsherpa_hl_gimbal_yaw_link"/>
+    <child link="rbsherpa_hl_gimbal_roll_link"/>
+    <origin rpy="0.0 0.0 0.0" xyz="-0.14220 -0.00680 -0.14330"/>
+    <axis xyz="1.0 0.0 0.0"/>
+    <limit effort="30.0" lower="-1.57079632679" upper="1.57079632679" velocity="50.0"/>
+  </joint>
+  <link name="rbsherpa_hl_gimbal_roll_link">
+    <visual>
+      <origin rpy="0.0 0.0 3.14159265359" xyz="-0.310 0.0050 0.220"/>
+      <geometry>
+        <mesh filename="package://rm3_sherpa_description/description/meshes/gimbal_roll.dae"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <mass value="0.5"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <inertia ixx="0.00492083333333" ixy="0.0" ixz="0.0" iyy="0.00177083333333" iyz="0.0" izz="0.00648333333333"/>
+    </inertial>
+  </link>
+  <gazebo reference="rbsherpa_hl_gimbal_roll_link">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+
+  <joint name="rbsherpa_hl_gimbal_pitch_joint" type="revolute">
+    <parent link="rbsherpa_hl_gimbal_roll_link"/>
+    <child link="rbsherpa_hl_gimbal_pitch_link"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.18120 -0.13220 -0.00340"/>
+    <axis xyz="0.0 -1 0.0"/>
+    <limit effort="30.0" lower="-1.57079632679" upper="1.57079632679" velocity="50.0"/>
+  </joint>
+  -
+  <link name="rbsherpa_hl_gimbal_pitch_link">
+    <visual>
+      <origin rpy="0.0 0.0 3.14159265359" xyz="-0.480 0.13780 0.21850"/>
+      <geometry>
+        <mesh filename="package://rm3_sherpa_description/description/meshes/gimbal_pitch.dae"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <mass value="0.5"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.140 0.0"/>
+      <inertia ixx="0.00317083333333" ixy="0.0" ixz="0.0" iyy="0.00150520833333" iyz="0.0" izz="0.00166770833333"/>
+    </inertial>
+  </link>
+  <gazebo reference="rbsherpa_hl_gimbal_pitch_link">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+  <joint name="camera_joint" type="fixed">
+    <parent link="rbsherpa_hl_gimbal_pitch_link"/>
+    <child link="camera"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.02040 0.14450 -0.00710"/>
+  </joint>
+  <link name="camera">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <box size="0.020 0.020 0.020"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <mass value="0.5"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <inertia ixx="3.33333333333e-05" ixy="0.0" ixz="0.0" iyy="3.33333333333e-05" iyz="0.0" izz="3.33333333333e-05"/>
+    </inertial>
+  </link>
+  <joint name="micasense_joint" type="fixed">
+    <parent link="rbsherpa_hl_gimbal_pitch_link"/>
+    <child link="micasense"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.11540 0.14610 0.06410"/>
+  </joint>
+  <link name="micasense">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <box size="0.020 0.020 0.020"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <mass value="0.5"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <inertia ixx="3.33333333333e-05" ixy="0.0" ixz="0.0" iyy="3.33333333333e-05" iyz="0.0" izz="3.33333333333e-05"/>
+    </inertial>
+  </link>
+  <!-- camera/micasense -->
+  <gazebo reference="micasense">
+    <sensor name="camera" type="camera">
+      <update_rate>30.0</update_rate>
+      <camera name="head">
+        <horizontal_fov>1.3962634</horizontal_fov>
+        <image>
+          <width>800</width>
+          <height>800</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>300</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <!-- Noise is sampled independently per pixel on each frame.
+                   That pixel's noise value is added to each of its color
+                   channels, which at that point lie in the range [0,1]. -->
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+      <plugin filename="libgazebo_ros_camera.so" name="camera_controller">
+        <alwaysOn>true</alwaysOn>
+        <updateRate>0.0</updateRate>
+        <cameraName>camera</cameraName>
+        <imageTopicName>image_raw</imageTopicName>
+        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+        <frameName>micasense</frameName>
+        <hackBaseline>0.07</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
+      </plugin>
+    </sensor>
+  </gazebo>
+  <!-- IMU -->
+  <joint name="imu_joint" type="fixed">
+    <parent link="rbsherpa_hl_base_link"/>
+    <child link="imu"/>
+    <origin rpy="0 0 0" xyz="0.54590 -0.07190 0.6970"/>
+  </joint>
+  <link name="imu">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.040 0.040 0.030"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.10"/>
+      <inertia ixx="2.08333333333e-05" ixy="0.0" ixz="0.0" iyy="2.08333333333e-05" iyz="0.0" izz="2.66666666667e-05"/>
+    </inertial>
+  </link>
+  <!-- Velodye -->
+  <joint name="velodyne_joint" type="fixed">
+    <parent link="rbsherpa_hl_base_link"/>
+    <child link="rbsherpa_hl_velodyne_base_link"/>
+    <origin rpy="0 0 0" xyz="0.8815 0.08320 0.3334"/>
+    <!-- Inserire inclinazione del velodyne -->
+  </joint>
+  <link name="rbsherpa_hl_velodyne_base_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0.00170 -0.07440 0.11750"/>
+      <geometry>
+        <cylinder length="0.080" radius="0.08"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.00170 0.07440 0.11750"/>
+      <mass value="0.830"/>
+      <inertia ixx="0.00177066666667" ixy="0.0" ixz="0.0" iyy="0.002656" iyz="0.0" izz="0.00177066666667"/>
+    </inertial>
+  </link>
+  <gazebo reference="rbsherpa_hl_velodyne_base_link">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+ 
+  <!-- GAZEBO -->
+  <!-- ros_control plugin -->
+  <gazebo>
+    <plugin filename="libgazebo_ros_p3d.so" name="ground_truth">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>100.0</updateRate>
+      <bodyName>baselink</bodyName>
+      <topicName>/ekf_localization_slam_node/slam_odom_magnetic</topicName>
+      <gaussianNoise>0.00</gaussianNoise>
+      <frameName>/map</frameName>
+      <xyzOffsets>0 0 0</xyzOffsets>
+      <rpyOffsets>0 0 0</rpyOffsets>
+    </plugin>
+    <!-- ros_control plugin -->
+    <plugin filename="libgazebo_ros_control.so" name="gazebo_ros_control">
+      <legacyModeNS>true</legacyModeNS>
+    </plugin>
+  </gazebo>
+</robot>

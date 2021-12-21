@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+
+<!-- arrow -->
+
+<robot name ="arrow" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find rm3_sherpa_description)/description/urdf/macros.xacro"/>
+
+<!-- Base Link -->
+	<link name="arrow_baselink">
+		<visual>
+			<origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.001"/>
+			<geometry>
+				<box size="0.001 0.001 0.001"/>
+		      </geometry>
+		</visual>
+
+	</link>
+  
+  <joint name="baselink_to_arrow" type="fixed">
+    <parent link="baselink"/>
+    <child link="arrow"/>
+    <origin xyz=" 0 0 0"/>
+  </joint>
+
+  <link name="arrow">
+    <visual>
+        <geometry>
+            <mesh filename="package://rm3_sherpa_description/description/meshes/arrow.dae" />
+        </geometry>
+      <origin rpy="0 0 0" xyz="0 0 5"/>
+      <material name="red"/>
+    </visual>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="1"/>
+      <inertia
+	  ixx="1e-4" ixy="0.0" ixz="0.0"
+	  iyy="1e-4" iyz="0.0"
+	  izz="1e-4"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="arrow">
+    <material>Gazebo/Sherpa_1</material>
+  </gazebo>
+
+</robot>

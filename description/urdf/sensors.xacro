@@ -206,7 +206,7 @@
 	<joint name="gps_joint" type="fixed">
 		<parent link="${prefix}base_link"/>
 		<child link="gps"/>
-		<origin xyz="-0.622 0.0 2.150" rpy="0 0 0"/>
+		<origin xyz="-0.622 0.0 2.050" rpy="0 0 0"/>
 	</joint>
 	
 	<link name="gps">
@@ -529,7 +529,7 @@
           <camera name="head">
             <horizontal_fov>1.3962634</horizontal_fov>
             <image>
-              <width>800</width>
+              <width>1000</width>
               <height>800</height>
               <format>R8G8B8</format>
             </image>

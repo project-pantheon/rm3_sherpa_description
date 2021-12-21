@@ -13,12 +13,12 @@
         izz="${m*(w*w+h*h)/12}"/>
     </xacro:macro>
 
-    <!-- Cylinder Inertia USELESS-->
+    <!-- Cylinder Inertia-->
     <xacro:macro name="cylinder_inertia" params="m r h">
         <inertia  	ixx="${m*(3*r*r+h*h)/12}" ixy = "0.0" ixz = "0.0" 
         iyy="${m*r*r/2}" iyz = "0.0" 
         izz="${m*(3*r*r+h*h)/12}"/>
-    </xacro:macro> <!--modified 10/05/2019 (swapped y and z inertia) -->
+    </xacro:macro>
 
 
     <xacro:macro name="default_inertial_wheel" params="mass">
