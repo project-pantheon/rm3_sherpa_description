@@ -35,9 +35,9 @@
         output="screen" args="$(find rm3_sherpa_description)/description/config/sherpa_controller_omni.yaml"/>
         
         <!-- Spawn Robot model -->
-        <arg name="tf_prefix" value="rbsherpa_hl_"/>
+        <arg name="prefix" value="rbsherpa_hl_"/>
         <arg name="robot_name" default="rbsherpa_hl_"/>
-        <param name="robot_description" command="$(find xacro)/xacro '$(find rm3_sherpa_description)/description/robots/model.urdf' prefix:=$(arg tf_prefix)"/>
+        <param name="robot_description" command="$(find xacro)/xacro.py '$(find rm3_sherpa_description)/description/robots/rm3_sherpa_omni.urdf.xacro' prefix:=$(arg prefix) sim:=false --inorder"/>
 	
         <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
             <remap from="sherpa/joint_states" to="/joint_states" />
@@ -49,7 +49,20 @@
         <node name="gimbal_gazebo" pkg="rm3_sherpa_description" type="virtual_gimbal.py" />
 
         <!-- Kinematic control -->
-        <node name="akrm_cmd" pkg="rm3_sherpa_description" type="omni-ackermann_cmd_node"/> 
+        <node name="akrm_cmd" pkg="rm3_sherpa_description" type="ackermann_cmd_node">
+            <param name="cmd_vel_topic" value="/base/base_pad/cmd_vel" />
+            <param name="front_left_wheel_steer_topic" value="/front_left_wheel_steer_joint_controller/command" />
+            <param name="front_right_wheel_steer_topic" value="/front_right_wheel_steer_joint_controller/command" />
+            <param name="back_left_wheel_steer_topic" value="/back_left_wheel_steer_joint_controller/command" />
+            <param name="back_right_wheel_steer_topic" value="/back_right_wheel_steer_joint_controller/command" />
+            <param name="front_left_wheel_traction_topic" value="/front_left_wheel_traction_joint_controller/command" />
+            <param name="front_right_wheel_traction_topic" value="/front_right_wheel_traction_joint_controller/command" />
+            <param name="back_left_wheel_traction_topic" value="/back_left_wheel_traction_joint_controller/command" />
+            <param name="back_right_wheel_traction_topic" value="/back_right_wheel_traction_joint_controller/command" />
+            <param name="interaxis_front_back" value="1.335" />
+            <param name="interaxis_left_right" value="0.855" />
+            <param name="wheel_radius" value="0.17430" />
+        </node>
 
 <!--    </group>-->
 

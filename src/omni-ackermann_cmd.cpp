@@ -3,7 +3,7 @@
 #include "geometry_msgs/Twist.h"
 #include <math.h>
 #include "nav_msgs/Odometry.h"
-
+#include <sstream>
 
 
 /* Class initialization
@@ -35,28 +35,45 @@ int sign(double num) {
 int main(int argc, char** argv) {
   
   ros::init(argc, argv, "akrm_cmd");
-  ros::NodeHandle akrm;
-  //ros::Publisher value_pub = akrm.advertise<geometry_msgs::Twist>("sherpa/akrm_cmd", 10);
-  SubToAckermannCmd sub_akrm;
-  ros::Subscriber vel_gamma = akrm.subscribe("/base/base_pad/cmd_vel", 10, &SubToAckermannCmd::AckermannSubCallback, &sub_akrm);
+  ros::NodeHandle akrm("~");
+    
+  std::string cmd_vel_topic,
+    front_left_wheel_steer_topic, front_right_wheel_steer_topic,
+    back_left_wheel_steer_topic, back_right_wheel_steer_topic,
+    front_left_wheel_traction_topic, front_right_wheel_traction_topic,
+    back_left_wheel_traction_topic, back_right_wheel_traction_topic;
   
-  ros::Publisher left_front_steer_pub = akrm.advertise<std_msgs::Float64>("front_left_wheel_steer_joint_controller/command", 10);
-  ros::Publisher right_front_steer_pub = akrm.advertise<std_msgs::Float64>("front_right_wheel_steer_joint_controller/command", 10);
-  ros::Publisher left_rear_steer_pub = akrm.advertise<std_msgs::Float64>("back_left_wheel_steer_joint_controller/command", 10);
-  ros::Publisher right_rear_steer_pub = akrm.advertise<std_msgs::Float64>("back_right_wheel_steer_joint_controller/command", 10);
+  akrm.param<std::string>("cmd_vel_topic", cmd_vel_topic, "/base/base_pad/cmd_vel");
+
+  akrm.param<std::string>("front_left_wheel_steer_topic", front_left_wheel_steer_topic, "/front_left_wheel_steer_joint_controller/command");
+  akrm.param<std::string>("front_right_wheel_steer_topic", front_right_wheel_steer_topic, "/front_right_wheel_steer_joint_controller/command");
+  akrm.param<std::string>("back_left_wheel_steer_topic", back_left_wheel_steer_topic, "/back_left_wheel_steer_joint_controller/command");
+  akrm.param<std::string>("back_right_wheel_steer_topic", back_right_wheel_steer_topic, "/back_right_wheel_steer_joint_controller/command");
+
+  akrm.param<std::string>("front_left_wheel_traction_topic", front_left_wheel_traction_topic, "/front_left_wheel_traction_joint_controller/command");
+  akrm.param<std::string>("front_right_wheel_traction_topic", front_right_wheel_traction_topic, "/front_right_wheel_traction_joint_controller/command");
+  akrm.param<std::string>("back_left_wheel_traction_topic", back_left_wheel_traction_topic, "/back_left_wheel_traction_joint_controller/command");
+  akrm.param<std::string>("back_right_wheel_traction_topic", back_right_wheel_traction_topic, "/back_right_wheel_traction_joint_controller/command");
+  
+  SubToAckermannCmd sub_akrm;
+  ros::Subscriber vel_gamma = akrm.subscribe(cmd_vel_topic, 10, &SubToAckermannCmd::AckermannSubCallback, &sub_akrm);
+  
+  ros::Publisher left_front_steer_pub = akrm.advertise<std_msgs::Float64>(front_left_wheel_steer_topic, 10);
+  ros::Publisher right_front_steer_pub = akrm.advertise<std_msgs::Float64>(front_right_wheel_steer_topic, 10);
+  ros::Publisher left_rear_steer_pub = akrm.advertise<std_msgs::Float64>(back_left_wheel_steer_topic, 10);
+  ros::Publisher right_rear_steer_pub = akrm.advertise<std_msgs::Float64>(back_right_wheel_steer_topic, 10);
  
 
-  ros::Publisher left_front_axle_pub = akrm.advertise<std_msgs::Float64>("front_left_wheel_traction_joint_controller/command", 10);
-  ros::Publisher right_front_axle_pub = akrm.advertise<std_msgs::Float64>("front_right_wheel_traction_joint_controller/command", 10);
-  ros::Publisher left_rear_axle_pub = akrm.advertise<std_msgs::Float64>("back_left_wheel_traction_joint_controller/command", 10);
-  ros::Publisher right_rear_axle_pub = akrm.advertise<std_msgs::Float64>("back_right_wheel_traction_joint_controller/command", 10);
+  ros::Publisher left_front_axle_pub = akrm.advertise<std_msgs::Float64>(front_left_wheel_traction_topic, 10);
+  ros::Publisher right_front_axle_pub = akrm.advertise<std_msgs::Float64>(front_right_wheel_traction_topic, 10);
+  ros::Publisher left_rear_axle_pub = akrm.advertise<std_msgs::Float64>(back_left_wheel_traction_topic, 10);
+  ros::Publisher right_rear_axle_pub = akrm.advertise<std_msgs::Float64>(back_right_wheel_traction_topic, 10);
 
+  double h, w, wheel_radius;
 
-
-
-
-  double h = 1.335;
-  double w = 0.855;
+  akrm.param<double>("interaxis_front_back", h, 1.335);
+  akrm.param<double>("interaxis_left_right", w, 0.855);
+  akrm.param<double>("wheel_radius", wheel_radius, 0.17430);
   
   double gamma;
   double R;           /* Curvature radius middle rear axel  */
@@ -111,10 +128,10 @@ int main(int argc, char** argv) {
     
     if (gamma == 0.0) {
      
-    lf_vel.data = input_velocity.data/0.16;
-    rf_vel.data = input_velocity.data/0.16;
-    lr_vel.data = input_velocity.data/0.16;
-    rr_vel.data = input_velocity.data/0.16;
+    lf_vel.data = input_velocity.data/wheel_radius;
+    rf_vel.data = input_velocity.data/wheel_radius;
+    lr_vel.data = input_velocity.data/wheel_radius;
+    rr_vel.data = input_velocity.data/wheel_radius;
 
     
     }else{
@@ -130,10 +147,10 @@ int main(int argc, char** argv) {
     lr_vel.data = omega*R_lr;
     rr_vel.data = omega*R_rr; 
     
-    lf_vel.data = lf_vel.data/0.16;
-    rf_vel.data = rf_vel.data/0.16;
-    lr_vel.data = lr_vel.data/0.16;
-    rr_vel.data = rr_vel.data/0.16;
+    lf_vel.data = lf_vel.data/wheel_radius;
+    rf_vel.data = rf_vel.data/wheel_radius;
+    lr_vel.data = lr_vel.data/wheel_radius;
+    rr_vel.data = rr_vel.data/wheel_radius;
 
     }
     

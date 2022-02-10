@@ -133,7 +133,7 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/rm3_sherpa_description_node.cpp)
-add_executable(omni-ackermann_cmd_node src/omni-ackermann_cmd.cpp)
+add_executable(ackermann_cmd_node src/omni-ackermann_cmd.cpp)
 #add_executable(arrow_node src/arrow.cpp)
 
 ## Rename C++ executable without prefix
@@ -145,7 +145,7 @@ add_executable(omni-ackermann_cmd_node src/omni-ackermann_cmd.cpp)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(omni-ackermann_cmd_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(ackermann_cmd_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 #add_dependencies(arrow_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 
@@ -154,7 +154,7 @@ add_dependencies(omni-ackermann_cmd_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${c
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
-target_link_libraries(omni-ackermann_cmd_node ${catkin_LIBRARIES})
+target_link_libraries(ackermann_cmd_node ${catkin_LIBRARIES})
 #target_link_libraries(arrow_node ${catkin_LIBRARIES})
 
 
