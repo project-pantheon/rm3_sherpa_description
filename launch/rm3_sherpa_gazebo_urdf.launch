@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <!-- these are the arguments you can pass this launch file -->
+  <arg name="namespace" default="/"/>
+  <arg name="paused" default="false"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+
+  <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <!--arg name="world_name" value="$(find sherpa_ros)/worlds/empty.world"/-->
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    <arg name="headless" value="$(arg headless)"/>
+  </include>
+
+
+
+
+<!--    <group ns="sherpa"> -->
+
+        <!-- Combine joint values-->
+<!--        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/> -->
+        
+        <!-- load the controllers -->
+        <rosparam file="$(find rm3_sherpa_description)/description/config/sherpa_controller_omni.yaml" command="load" /> 
+        <node name="controller_spawner" pkg="controller_manager"
+        type="spawner" respawn="false"
+        output="screen" args="$(find rm3_sherpa_description)/description/config/sherpa_controller_omni.yaml"/>
+        
+        <!-- Spawn Robot model -->
+        <arg name="prefix" value="rbsherpa_hl_"/>
+        <arg name="robot_name" default="rbsherpa_hl_"/>
+        <param name="robot_description" command="$(find xacro)/xacro '$(find rm3_sherpa_description)/description/robots/rm3_sherpa_omni.urdf'"/>
+	
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+            <remap from="sherpa/joint_states" to="/joint_states" />
+        </node>
+        
+        <node name="sherpa_ros_urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf -model $(arg robot_name) -param robot_description -z 0.1 -R 0"/>
+
+        <!-- Gazebo Gimbal>-->
+        <node name="gimbal_gazebo" pkg="rm3_sherpa_description" type="virtual_gimbal.py" />
+
+        <!-- Kinematic control -->
+        <node name="akrm_cmd" pkg="rm3_sherpa_description" type="ackermann_cmd_node">
+            <param name="cmd_vel_topic" value="/base/base_pad/cmd_vel" />
+            <param name="front_left_wheel_steer_topic" value="/front_left_wheel_steer_joint_controller/command" />
+            <param name="front_right_wheel_steer_topic" value="/front_right_wheel_steer_joint_controller/command" />
+            <param name="back_left_wheel_steer_topic" value="/back_left_wheel_steer_joint_controller/command" />
+            <param name="back_right_wheel_steer_topic" value="/back_right_wheel_steer_joint_controller/command" />
+            <param name="front_left_wheel_traction_topic" value="/front_left_wheel_traction_joint_controller/command" />
+            <param name="front_right_wheel_traction_topic" value="/front_right_wheel_traction_joint_controller/command" />
+            <param name="back_left_wheel_traction_topic" value="/back_left_wheel_traction_joint_controller/command" />
+            <param name="back_right_wheel_traction_topic" value="/back_right_wheel_traction_joint_controller/command" />
+            <param name="interaxis_front_back" value="1.335" />
+            <param name="interaxis_left_right" value="0.855" />
+            <param name="wheel_radius" value="0.17430" />
+        </node>
+
+<!--    </group>-->
+
+<!--    <node name="omni_cmd" pkg="sherpa_ros" type="sherpa_omni_cmd_node"/> -->
+<!--    <node name="map_manager" pkg="sherpa_ros" type="map_manager_node"/>-->
+
+
+</launch>
